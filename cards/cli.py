@@ -10,7 +10,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import List
 
-from . import database, importer, scheduler, sm2, stats
+from . import database, importer, prompts, scheduler, sm2, stats
 from .config import CONFIG
 from .utils import dumps_json, ensure_directory, timestamp_now
 
@@ -75,7 +75,7 @@ def command_practice(args: argparse.Namespace) -> None:
             mode = scheduled.mode
             print("-" * 60)
             print(f"[{index}/{len(session)}] Mode: {mode} | Next due: {review.next_review.date()}")
-            question, answer = _build_prompt(card, mode)
+            question, answer = prompts.build_prompt(card, mode)
             print(f"Q: {question}")
             input("Press Enter to reveal answer...")
             print(f"A: {answer}")
@@ -129,16 +129,6 @@ def _calculate_avg(previous: float | None, count: int, new_value: float) -> floa
     if previous is None or count == 0:
         return new_value
     return ((previous * count) + new_value) / (count + 1)
-
-
-def _build_prompt(card: database.Card, mode: str) -> tuple[str, str]:
-    if mode == "eng2cn":
-        return (card.term, card.cn or "(no Chinese translation)")
-    if mode == "cn2eng":
-        return (card.cn or "(no Chinese translation)", card.term)
-    if mode == "ipa":
-        return (card.term, card.ipa or "(no IPA provided)")
-    return (card.term, card.cn or card.ipa or "(no data)")
 
 
 def _prompt_grade() -> str:

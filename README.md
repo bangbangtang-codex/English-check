@@ -8,6 +8,7 @@ This project provides a fully local spaced-repetition workflow for English vocab
 - **Persistent storage**: Data is stored in a local SQLite database (`cards.db`) with tables for `cards`, `reviews`, `logs`, and `import_log`.
 - **Scheduling**: Implements the classic SM-2 algorithm, supporting again/hard/good/easy grades and automatic next-review calculations.
 - **Session orchestration**: CLI `practice` mode prioritises due reviews, short-interval learning cards, and new vocabulary per configurable ratios.
+- **Graphical desktop app**: Launch a Tkinter dashboard that mirrors the card-selection logic and lets you grade answers with Again/Hard/Good/Easy buttons.
 - **Analytics & exports**: Show accuracy trends, due counts, total study time, and export a 7-day “错题本” to CSV.
 
 ## Requirements
@@ -37,7 +38,15 @@ Import a vocabulary sheet:
 python -m cards.cli import path/to/2025-09-24.xlsx
 ```
 
-Start a study session (defaults to 100 cards per session):
+Launch the graphical interface:
+
+```bash
+python -m cards.gui
+```
+
+The window offers buttons for importing spreadsheets, shows the current due/new counts, and lets you step through a study session with on-screen grading buttons.
+
+Start a study session from the command line (defaults to 100 cards per session):
 
 ```bash
 python -m cards.cli practice --limit 40
@@ -91,9 +100,11 @@ Environment variables let you tweak defaults:
 ```
 cards/
   cli.py          # command line interface
+  gui.py          # Tkinter desktop experience
   config.py       # configuration and ratios
   database.py     # SQLite schema and helpers
   importer.py     # Excel/CSV ingestion
+  prompts.py      # presentation helpers for Q/A text
   scheduler.py    # session card selection
   sm2.py          # SM-2 algorithm implementation
   stats.py        # reporting utilities

@@ -749,7 +749,7 @@ function sampleToParsed(data: SimpleCard[], _source: string): ParsedRow[] {
 }
 
 // ===== 主组件 =====
-export default function QuizGPTFlashcards() {
+export default function App() {
   const [allCards, setAllCards] = React.useState<CardRecord[]>([]);
   const [plan, setPlan] = React.useState<PlanMetrics>({ due: 0, learning: 0, newCount: 0, totalCards: 0 });
   const [importReport, setImportReport] = React.useState<ImportReport | null>(null);
